@@ -1,0 +1,238 @@
+openapi: 3.0.3
+info:
+  title: Dozitat - OpenAPI 3.0
+  description: |-
+    Zitate Sammlung der Dozenten
+    
+    Some useful links:
+    - [Dozitat repository](https://github.com/swagger-api/swagger-petstore)
+    
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: on21@googlegroups.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+tags:
+paths:
+  /quotes:
+    get:
+      tags:
+        - quotes
+      summary: Get all quotes
+      description: Get all quotes of all professors
+      operationId: findAllQuotes
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quotes'          
+        '400':
+          description: not found
+    put:
+      tags:
+        - quotes
+      summary: Add a new Quote to the list
+      description: Add a new Quote
+      operationId: addQuote
+      requestBody:
+        description: Create a new quote
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quotes'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/quotes'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/quotes'
+        required: true
+      responses:
+        '201':
+          description: Quote successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quotes'
+        '405':
+          description: Invalid input
+  /quotes/{quoteId}:
+    get:
+      tags:
+        - quotes
+      summary: Get Quote by ID
+      description: Get a singular quote by ID
+      operationId: findQuoteByID
+      parameters:
+        - name: quoteID
+          in: int64
+          description: The ID of the quote you want to access
+          required: false
+          explode: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quotes'          
+        '404':
+          description: ID not found
+        '400':
+          description: wrong format
+  /quotes/{professorName}:
+    get:
+      tags:
+        - quotes
+      summary: Get all quotes of a professor
+      description: Get all quotes of a professor
+      operationId: findQuoteByProfessor
+      parameters:
+        - name: professorName
+          in: string
+          description: The name of the chosen professor
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quotes'          
+        '404':
+          description: professor not found
+        '400':
+          description: wrong format
+  /quotes/{professorID}:
+    get:
+      tags:
+        - quotes
+      summary: Get all quotes of a professor
+      description: Get all quotes of a professor
+      operationId: findQuoteByProfessorID
+      parameters:
+        - name: professorID
+          in: integer
+          description: The ID of the chosen professor
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quotes'          
+        '404':
+          description: professor not found
+        '400':
+          description: wrong format          
+  /professors:
+    get:
+      tags: 
+        - professors
+      summary: Get all professors
+      description: Get all professors
+      operationId: findAllProfessors
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/professor'          
+        '400':
+          description: wrong format             
+  /professors/{professorID}:
+    get:
+      tags:
+        - professors
+      summary: Get professor by ID
+      description: Get professor by ID
+      operationId: findProfessorByProfessorID
+      parameters:
+        - name: professorID
+          in: integer
+          description: The ID of the chosen professor
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: professor not found
+        '400':
+          description: wrong format              
+  /professors/{professorName}:
+    get:
+      tags:
+        - professors
+      summary: Get professor by name
+      description: Get professor by name
+      operationId: findProfessorByName
+      parameters:
+        - name: professorName
+          in: string
+          description: The name of the chosen professor
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: integer         
+        '400':
+          description: wrong format        
+        '404':
+          description: professor not found  
+components:
+  schemas:
+    quotes:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        quote:
+          type: string
+        professor:
+          type: string
+        date:
+          type: string
+          format: date-time
+    professor:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string  
