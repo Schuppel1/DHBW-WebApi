@@ -7,13 +7,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 
-
 @RestController
-@RequestMapping("/greeting")
-public class GreetingController {
-    @RequestMapping(path="/all", method = RequestMethod.GET)
-    public ResponseEntity<String> getGreetings() {
-        return ResponseEntity.ok().body("Hi all!");
+@RequestMapping("/quotes")
+public class QuotesController {
+    @RequestMapping(path="/", method = RequestMethod.GET)
+    public ResponseEntity<String> getQuotes() {
+        return ResponseEntity.ok().body("Work in progress...");
     }
 
     @RequestMapping(path="/{benutzername}", method = RequestMethod.DELETE)
@@ -22,7 +21,7 @@ public class GreetingController {
     }
 
     @RequestMapping(path="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> getQuoteFromID(@PathVariable("id") String name) {
+    public ResponseEntity<String> getGreetingsFromPath(@PathVariable("id") String name) {
         return ResponseEntity.ok().body(name);
     }
 
