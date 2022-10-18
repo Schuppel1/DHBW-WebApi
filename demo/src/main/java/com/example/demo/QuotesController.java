@@ -1,18 +1,32 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/quotes")
 public class QuotesController {
-    @RequestMapping(path="/", method = RequestMethod.GET)
-    public ResponseEntity<String> getQuotes() {
-        return ResponseEntity.ok().body("Work in progress...");
+
+    @Autowired
+    private QuotesRepository quotesRepository;
+
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Quotes>> getQuotes() {
+
+
+        Iterable<Quotes> quotes = quotesRepository.findAll();
+
+        ResponseEntity<Iterable<Quotes>> local  = ResponseEntity.of(Optional.of(quotes));
+        return local;
+        //return ResponseEntity.ok().body(quotes);
     }
 
     @RequestMapping(path="/{benutzername}", method = RequestMethod.DELETE)
@@ -25,10 +39,10 @@ public class QuotesController {
         return ResponseEntity.ok().body(name);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<String> getGreetingsFromParam(@RequestParam String name) {
-        return ResponseEntity.ok().body(name);
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    public ResponseEntity<String> getGreetingsFromParam(@RequestParam String name) {
+//        return ResponseEntity.ok().body(name);
+//    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity postGreetings(@RequestBody Greeting greeting) throws URISyntaxException {
