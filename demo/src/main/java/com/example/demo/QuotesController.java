@@ -35,6 +35,18 @@ public class QuotesController {
     }
 
     @RequestMapping(path="/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Quotes> getQuotesByID(@PathVariable("id") int searchedID) {
+        Iterable<Quotes> quotes = quotesRepository.findAll();
+        ResponseEntity<Quotes> local;
+        for (Quotes quote : quotes) {
+            if(((int) quote.getId()) == searchedID) {
+                local  = ResponseEntity.of(Optional.of(quote));
+                return local;
+            }
+        }
+        local  = ResponseEntity.notFound().build();
+        return local;
+    }
     public ResponseEntity<String> getGreetingsFromPath(@PathVariable("id") String name) {
         return ResponseEntity.ok().body(name);
     }
