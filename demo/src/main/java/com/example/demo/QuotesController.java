@@ -29,12 +29,22 @@ public class QuotesController {
         //return ResponseEntity.ok().body(quotes);
     }
 
-    @RequestMapping(path="/{benutzername}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> delete(@PathVariable("benutzername") String name) {
-        return ResponseEntity.ok().body(name);
+
+    @RequestMapping(path="professor/{professor}", method = RequestMethod.GET)
+    public ResponseEntity<Quotes> getQuotesByName(@PathVariable("professor") String searchedName) {
+        Iterable<Quotes> quotes = quotesRepository.findAll();
+        ResponseEntity<Quotes> local;
+        for (Quotes quote : quotes) {
+            if(quote.getProfessor().equals(searchedName)) {
+                local  = ResponseEntity.of(Optional.of(quote));
+                return local;
+            }
+        }
+        local  = ResponseEntity.notFound().build();
+        return local;
     }
 
-    @RequestMapping(path="/{id}", method = RequestMethod.GET)
+    @RequestMapping(path="id/{id}", method = RequestMethod.GET)
     public ResponseEntity<Quotes> getQuotesByID(@PathVariable("id") int searchedID) {
         Iterable<Quotes> quotes = quotesRepository.findAll();
         ResponseEntity<Quotes> local;
